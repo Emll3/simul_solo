@@ -527,8 +527,14 @@ class Simulation:
                         # FIFO
                         self.weekSchedule[d][s].appTime = time
                     elif (self.rule == 2):
-                        # TODO: Bailey-Welch rule
-                        pass
+                        # DONE: Bailey-Welch rule
+                        K_rule = 2
+                        elective_count = sum(1 for prev_s in range(s) if self.weekSchedule[d][prev_s].slotType == 1)
+                        first_elective_time = next(self.weekSchedule[d][ps].startTime for ps in range(s + 1) if self.weekSchedule[d][ps].slotType == 1)
+                        if elective_count < K_rule:
+                            self.weekSchedule[d][s].appTime = first_elective_time
+                        else:
+                            self.weekSchedule[d][s].appTime = time - self.slotLength
                     elif (self.rule == 3):
                         # TODO: Blocking rule
                         pass
