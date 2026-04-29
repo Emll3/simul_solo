@@ -536,11 +536,15 @@ class Simulation:
                         else:
                             self.weekSchedule[d][s].appTime = time - self.slotLength
                     elif (self.rule == 3):
-                        # TODO: Blocking rule
-                        pass
+                        # DONE: Blocking rule
+                        B_rule = 2
+                        elective_count = sum(1 for prev_s in range(s) if self.weekSchedule[d][prev_s].slotType == 1)
+                        block_start_rank = (elective_count // B_rule) * B_rule
+                        elective_slots = [ps for ps in range(s + 1) if self.weekSchedule[d][ps].slotType == 1]
+                        self.weekSchedule[d][s].appTime = self.weekSchedule[d][elective_slots[block_start_rank]].startTime
                     elif (self.rule == 4):
-                        # TODO: Benchmark rule
-                        pass
+                        # DONE: Benchmark rule
+                        self.weekSchedule[d][s].appTime = time - 0.5 * self.stdevElectiveDuration / 60
                 time += self.slotLength
                 if (time == 12):
                     # Lunchbreak, so skip ahead
