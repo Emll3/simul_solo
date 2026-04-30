@@ -6,6 +6,8 @@ Note: ofcourse you can also use the scipy.stats package to instantiate a distrib
 But why would you, if this is more fun? ;)
 """
 
+USE_ANTITHETIC = False  
+
 import random
 import math
 
@@ -18,6 +20,8 @@ def Exponential_distribution(lambda_value) -> float:
         float: random sample
     """
     j1 = random.randint(0, 1000) / 1000
+    if USE_ANTITHETIC:
+        j1 = 1 - j1
     if j1 == 0:
         j1 = 0.0001
     j2 = -math.log(j1) / lambda_value
